@@ -40,10 +40,14 @@ function Channel({
   return (
     <TouchableOpacity
       onPress={
-        () => onChannelChange?.({
-          channel: data.id,
-          source: 0
-        })
+        () => {
+          if (!active) {
+            onChannelChange?.({
+              channel: data.id,
+              source: 0
+            })
+          }
+        }
       }
     >
       <View
@@ -167,8 +171,10 @@ function App() {
     channel: -1,
     source: 0
   })
+  const [bufferring, setBufferring] = useState(false)
+  const { accent } = useTheme()
   const minimal = width < 600
-  const channelListHeight = minimal ? .5 * height : height
+  const playerHeight = minimal ? .5 * height : height
 
   const initChannels = async () => {
     try {
@@ -216,7 +222,10 @@ function App() {
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-            <Text>加载中...</Text>
+            <Text
+              style={{
+                color: `rgb(${accent})`
+              }}>数据加载中..</Text>
           </View>
         ) : (
           <View
@@ -228,7 +237,9 @@ function App() {
           >
             <View
               style={{
-                flexGrow: 1,
+                position: 'relative',
+                width: minimal ? '100%' : width - 240,
+                height: playerHeight,
                 backgroundColor: '#000'
               }}
             >
@@ -240,6 +251,9 @@ function App() {
                       type: 'm3u8'
                     }}
                     resizeMode="contain"
+                    onBuffer={
+                      ({ isBuffering }) => setBufferring(isBuffering)
+                    }
                     style={{
                       width: '100%',
                       height: '100%'
@@ -247,15 +261,34 @@ function App() {
                   />
                 )
               }
+              {
+                (!sourceUrl || bufferring) && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: '#fff'
+                      }}>加载中..</Text>
+                  </View>
+                )
+              }
             </View>
             <View
               style={{
-                width: minimal ? '100%' : 240,
-                height: channelListHeight
+                flexGrow: 1
               }}
             >
               <ChannelList
-                height={channelListHeight}
+                height={playerHeight}
                 data={data}
                 channel={activeChannel}
                 onChannelChange={setActiveChannel}

@@ -4,7 +4,8 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  IgnorableNamespaces="uap mp uap3">
 
   <Identity
     Name="289281e4-ee4f-4bf4-b0b4-562c230b618a"
@@ -51,5 +52,7 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="internetClientServer"/>
+    <uap3:Capability Name="backgroundMediaPlayback"/>
   </Capabilities>
 </Package>
