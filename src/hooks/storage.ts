@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react'
+import { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const getStoreData = async <T = any>(key: string) => {
@@ -19,10 +19,10 @@ const setStoreData = async (key: string, value: any) => {
     }
 }
 
-export function usePersistentStorage<T extends any>(key: string, initValue: T): [T, Dispatch<SetStateAction<T>>] {
+export function usePersistentStorage<T extends any>(key: string, initValue: T): [T, Dispatch<SetStateAction<T>>, boolean] {
 
     const [store, setStore] = useState<T>(initValue)
-    const init = useRef(true)
+    const [ready, setReady] = useState(false)
 
     useEffect(() => {
         const _getStore = async () => {
@@ -30,18 +30,16 @@ export function usePersistentStorage<T extends any>(key: string, initValue: T): 
             if (store) {
                 setStore(store)
             }
+            setReady(true)
         }
         _getStore()
     }, [])
 
     useEffect(() => {
-        if (init.current) {
-            init.current = false
-        }
-        else {
+        if (ready) {
             setStoreData(key, store)
         }
     }, [store])
 
-    return [store, setStore]
+    return [store, setStore, ready]
 }

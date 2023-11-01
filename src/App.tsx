@@ -122,13 +122,7 @@ function ChannelList({ height, data, channel: channelState, ...props }: ChannelL
     const headerHeight = sizeUnit * 5
     const scroller = useRef<FlatList | null>(null)
 
-    useEffect(() => {
-        const activeIndex = data.findIndex(({ id }) => id === channelState.channel)
-        scroller.current?.scrollToIndex({
-            index: activeIndex,
-            animated: true
-        })
-    }, [data])
+    const initialIndex = useMemo(() => data.findIndex(({ id }) => id === channelState.channel), [data, channelState])
 
     return (
         <View
@@ -157,6 +151,18 @@ function ChannelList({ height, data, channel: channelState, ...props }: ChannelL
                         )
                     }
                 }
+                getItemLayout={
+                    (_, index) => {
+                        const length = sizeUnit * 6
+                        const offset = length * index
+                        return {
+                            length,
+                            offset,
+                            index
+                        }
+                    }
+                }
+                initialScrollIndex={initialIndex}
                 keyExtractor={item => '' + item.id}
                 style={{
                     height: height - headerHeight
@@ -170,7 +176,7 @@ function App() {
     const { width, height } = useWindowDimensions()
     const [data, setData] = useState<TVChannel[]>([])
     const [loading, setLoading] = useState(true)
-    const [activeChannel, setActiveChannel] = usePersistentStorage<ChannelState>('_active_channel', {
+    const [activeChannel, setActiveChannel, ready] = usePersistentStorage<ChannelState>('_active_channel', {
         channel: -1,
         source: 0
     })
@@ -213,8 +219,10 @@ function App() {
     }, [data, activeChannel])
 
     useEffect(() => {
-        initChannels()
-    }, [])
+        if (ready) {
+            initChannels()
+        }
+    }, [ready])
 
     return (
         <SafeAreaView>
@@ -284,7 +292,7 @@ function App() {
                                 style={{
                                     position: 'absolute',
                                     top: playerHeight * .5 - sizeUnit * 2,
-                                    right: sizeUnit,
+                                    right: sizeUnit * 2,
                                     zIndex: 2
                                 }}
                                 onPress={
