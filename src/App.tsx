@@ -180,6 +180,7 @@ function App() {
         channel: -1,
         source: 0
     })
+    const [videoReady, setVideoReady] = useState(false)
     const [bufferring, setBufferring] = useState(false)
     const [playListShow, setPlayListShow] = useState(true)
     const { accent, sizeUnit } = useTheme()
@@ -217,6 +218,12 @@ function App() {
         }
         return null
     }, [data, activeChannel])
+
+    useEffect(() => {
+        if (activeSource) {
+            setVideoReady(false)
+        }
+    }, [activeSource])
 
     useEffect(() => {
         if (ready) {
@@ -264,9 +271,13 @@ function App() {
                                                     onBuffer={
                                                         ({ isBuffering }) => setBufferring(isBuffering)
                                                     }
+                                                    onLoad={
+                                                        () => setVideoReady(true)
+                                                    }
                                                     style={{
                                                         width: '100%',
-                                                        height: '100%'
+                                                        height: '100%',
+                                                        opacity: videoReady ? 1 : 0
                                                     }}
                                                 />
                                             )
@@ -275,16 +286,18 @@ function App() {
                                 )
                             }
                             {
-                                (!activeSource || bufferring) && (
+                                (!activeSource || !activeSource?.parse && !videoReady || bufferring) && (
                                     <FlexCenter
                                         style={{
                                             zIndex: 1
                                         }}
-                                        absolute>
+                                        absolute
+                                    >
                                         <Text
                                             style={{
                                                 color: '#fff'
-                                            }}>加载中..</Text>
+                                            }}
+                                        >加载中..</Text>
                                     </FlexCenter>
                                 )
                             }
