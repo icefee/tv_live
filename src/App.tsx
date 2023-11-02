@@ -184,8 +184,6 @@ function App() {
     const [bufferring, setBufferring] = useState(false)
     const [playListShow, setPlayListShow] = useState(true)
     const { accent, sizeUnit } = useTheme()
-    const minimal = width < 600
-    const playerHeight = minimal ? .5 * height : height
 
     const initChannels = async () => {
         try {
@@ -245,15 +243,14 @@ function App() {
                     <View
                         style={{
                             height: '100%',
-                            flexDirection: minimal ? 'column' : 'row',
+                            flexDirection: 'row',
                             alignItems: 'stretch'
                         }}
                     >
                         <View
                             style={{
                                 position: 'relative',
-                                width: (minimal || !playListShow) ? '100%' : width - 240,
-                                height: playerHeight,
+                                width: playListShow ? width - 240 : '100%',
                                 backgroundColor: '#000'
                             }}
                         >
@@ -304,8 +301,8 @@ function App() {
                             <TouchableOpacity
                                 style={{
                                     position: 'absolute',
-                                    top: playerHeight * .5 - sizeUnit * 2,
-                                    right: sizeUnit * 2,
+                                    top: height * .5 - sizeUnit * 2,
+                                    right: sizeUnit * 1.5,
                                     zIndex: 2
                                 }}
                                 onPress={
@@ -329,7 +326,7 @@ function App() {
                             }}
                         >
                             <ChannelList
-                                height={playerHeight}
+                                height={height}
                                 data={data}
                                 channel={activeChannel}
                                 onChannelChange={setActiveChannel}
