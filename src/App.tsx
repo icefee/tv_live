@@ -237,7 +237,8 @@ function App() {
                         <Text
                             style={{
                                 color: `rgb(${accent})`
-                            }}>数据加载中..</Text>
+                            }}
+                        >数据加载中..</Text>
                     </FlexCenter>
                 ) : (
                     <View
@@ -250,7 +251,7 @@ function App() {
                         <View
                             style={{
                                 position: 'relative',
-                                width: playListShow ? width - 240 : '100%',
+                                width: playListShow ? width - 250 : '100%',
                                 backgroundColor: '#000'
                             }}
                         >
