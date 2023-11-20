@@ -81,7 +81,8 @@ function Channel({
                         <Picker<number>
                             style={{
                                 height: sizeUnit * 4,
-                                width: sizeUnit * 10,
+                                width: sizeUnit * 9,
+                                flexGrow: 0,
                                 display: active ? 'flex' : 'none'
                             }}
                             selectionColor={`rgb(${accent})`}
@@ -251,7 +252,7 @@ function App() {
                         <View
                             style={{
                                 position: 'relative',
-                                width: playListShow ? width - 250 : '100%',
+                                width: playListShow ? width - 265 : '100%',
                                 backgroundColor: '#000'
                             }}
                         >
