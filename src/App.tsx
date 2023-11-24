@@ -252,7 +252,7 @@ function App() {
                         <View
                             style={{
                                 position: 'relative',
-                                width: playListShow ? width - 265 : '100%',
+                                width: playListShow ? width - 240 : '100%',
                                 backgroundColor: '#000'
                             }}
                         >
