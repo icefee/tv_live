@@ -4,19 +4,18 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
-  IgnorableNamespaces="uap mp uap3">
+  IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="289281e4-ee4f-4bf4-b0b4-562c230b618a"
+    Name="66cb2f07-7735-4416-b146-60bd355181a3"
     Publisher="CN=ying"
-    Version="1.1.2.0" />
+    Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="289281e4-ee4f-4bf4-b0b4-562c230b618a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="66cb2f07-7735-4416-b146-60bd355181a3" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>电视直播</DisplayName>
-    <PublisherDisplayName>icefee@outlook.com</PublisherDisplayName>
+    <DisplayName>tv_live</DisplayName>
+    <PublisherDisplayName>atian</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -39,20 +38,13 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="一个电视直播应用"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="电视直播"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
-        <uap:InitialRotationPreference>
-          <uap:Rotation Preference="landscape"/>
-          <uap:Rotation Preference="portrait"/>
-          <uap:Rotation Preference="landscapeFlipped"/>
-          <uap:Rotation Preference="portraitFlipped"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>
 
   <Capabilities>
     <Capability Name="internetClient" />
-    <Capability Name="internetClientServer"/>
-    <uap3:Capability Name="backgroundMediaPlayback"/>
   </Capabilities>
 </Package>

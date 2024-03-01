@@ -4,8 +4,13 @@ declare interface TvSource {
     parse?: boolean;
 }
 
-declare interface TVChannel {
+declare interface TvChannel {
     id: number;
     title: string;
     source: TvSource | TvSource[];
+}
+
+declare interface ChannelState {
+    channel: number;
+    source: number;
 }

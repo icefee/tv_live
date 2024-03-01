@@ -5,6 +5,7 @@ import {
     View,
     Text,
     Image,
+    Alert,
     TouchableOpacity,
     useWindowDimensions
 } from 'react-native'
@@ -22,13 +23,8 @@ const assets: Record<string, any> = {
     arrow: require('./assets/arrow.png')
 }
 
-interface ChannelState {
-    channel: number;
-    source: number;
-}
-
 interface ChannelProps {
-    data: TVChannel;
+    data: TvChannel;
     channel: ChannelState;
     onChannelChange?: (channel: ChannelState) => void;
 }
@@ -115,7 +111,7 @@ function Channel({
 
 interface ChannelListProps extends Omit<ChannelProps, 'data'> {
     height: number;
-    data: TVChannel[];
+    data: TvChannel[];
 }
 
 function ChannelList({ height, data, channel: channelState, ...props }: ChannelListProps) {
@@ -140,17 +136,19 @@ function ChannelList({ height, data, channel: channelState, ...props }: ChannelL
             >
                 <Text>播放列表</Text>
             </View>
-            <FlatList
+            <FlatList<TvChannel>
                 contentInsetAdjustmentBehavior="automatic"
                 ref={scroller}
                 data={data}
                 renderItem={
-                    ({ item }: { item: TVChannel }) => {
-                        const { id } = item
-                        return (
-                            <Channel key={id} data={item} channel={channelState} {...props} />
-                        )
-                    }
+                    ({ item }) => (
+                        <Channel
+                            key={item.id}
+                            data={item}
+                            channel={channelState}
+                            {...props}
+                        />
+                    )
                 }
                 getItemLayout={
                     (_, index) => {
@@ -175,7 +173,7 @@ function ChannelList({ height, data, channel: channelState, ...props }: ChannelL
 
 function App() {
     const { width, height } = useWindowDimensions()
-    const [data, setData] = useState<TVChannel[]>([])
+    const [data, setData] = useState<TvChannel[]>([])
     const [loading, setLoading] = useState(true)
     const [activeChannel, setActiveChannel, ready] = usePersistentStorage<ChannelState>('_active_channel', {
         channel: -1,
@@ -199,7 +197,9 @@ function App() {
             }
             setData(channels)
         }
-        catch (err) { }
+        catch (err) {
+            Alert.alert('数据源加载失败.')
+        }
         finally {
             setLoading(false)
         }
@@ -208,12 +208,12 @@ function App() {
     const activeSource = useMemo<TvSource | null>(() => {
         const { channel, source } = activeChannel
         const tvChannel = data.find(({ id }) => id === channel)
-        const activeSource = tvChannel?.source
-        if (activeSource) {
-            if (Array.isArray(activeSource)) {
-                return activeSource[source]
+        const channelSource = tvChannel?.source
+        if (channelSource) {
+            if (Array.isArray(channelSource)) {
+                return channelSource[source]
             }
-            return activeSource
+            return channelSource
         }
         return null
     }, [data, activeChannel])
@@ -258,7 +258,7 @@ function App() {
                         >
                             {
                                 activeSource && (
-                                    <RedirectionResolver url={activeSource.url} redirect={activeSource.parse}>
+                                    <RedirectionResolver url={activeSource.url} redirect={activeSource?.parse}>
                                         {
                                             (url) => (
                                                 <Video

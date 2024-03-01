@@ -51,7 +51,7 @@ async function parseUrl(url: string) {
 type RedirectionResolverProps = {
     url: string;
     redirect?: boolean;
-    children: (url: string) => React.ReactElement;
+    children: (url: string) => React.ReactNode;
 }
 
 function RedirectionResolver({ url, redirect = false, children }: RedirectionResolverProps) {
